@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
 import { SlotSymbol } from '@src/slot-machine/slot-symbol.enum';
-import { SlotSymbolRewardMap } from '@src/slot-machine/slot-symbol-reward.map';
 import { DatabaseService } from '@src/database/database.service';
+import { SlotMachineResponse } from '@src/slot-machine/types';
+import { SlotSymbolRewardMap } from '@src/slot-machine/slot-symbol-reward.map';
 import { InsufficientCreditsError, SessionDoesNotExistError } from '@src/slot-machine/errors';
 
 @Injectable()
@@ -13,7 +14,7 @@ export class SlotMachineService {
     this.symbols = Object.values(SlotSymbol);
   }
 
-  public async play(sessionId: string): Promise<[SlotSymbol, SlotSymbol, SlotSymbol, SlotSymbol]> {
+  public async play(sessionId: string): Promise<SlotMachineResponse> {
     const session = await this.databaseService.session.findFirst({ where: { id: sessionId } });
 
     if (!session) {
@@ -43,7 +44,10 @@ export class SlotMachineService {
       });
     }
 
-    return slots;
+    return {
+      slots,
+      credits: session.credits - 1 + reward,
+    };
   }
 
   private spinTheSlots(): [SlotSymbol, SlotSymbol, SlotSymbol, SlotSymbol] {

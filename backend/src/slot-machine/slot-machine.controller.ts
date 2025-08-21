@@ -1,5 +1,14 @@
-import { Controller, Get, Req, Version, Logger, Res, HttpStatus } from '@nestjs/common';
-import { Response } from 'express';
+import {
+  Controller,
+  Get,
+  Req,
+  Version,
+  Logger,
+  HttpCode,
+  HttpStatus,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 import { API_VERSION_1 } from '@src/common/constants';
 import { RequestWithSession } from '@src/common/types/request-with-session';
@@ -16,45 +25,46 @@ export class SlotMachineController {
 
   @Get('play')
   @Version(API_VERSION_1)
-  async play(
-    @Req() request: RequestWithSession,
-    @Res() response: Response,
-  ): Promise<DataApiResponseDto<SlotMachineResponse> | void> {
+  @HttpCode(HttpStatus.OK)
+  async play(@Req() request: RequestWithSession): Promise<DataApiResponseDto<SlotMachineResponse>> {
     try {
       const slots = await this.slotMachineService.play(request.session.id);
 
-      const dto: DataApiResponseDto<SlotMachineResponse> = {
+      return {
         data: slots,
         success: true,
         message: 'Slots spun successfully.',
       };
-
-      response.status(HttpStatus.OK);
-      return dto;
     } catch (error) {
       if (error instanceof InsufficientCreditsError) {
-        const dto: DataApiResponseDto<SlotMachineResponse> = {
+        throw new BadRequestException({
           data: null,
           success: false,
           message: error.message,
-        };
-
-        response.status(HttpStatus.BAD_REQUEST);
-        return dto;
+        });
       }
 
       if (error instanceof SessionDoesNotExistError) {
+        /**
+         * This error indicates that the session does not exist.
+         * Naturally, this should never happen, but if it does,
+         * we log and return a generic error message
+         * to not to expose any sensitivities.
+         */
         this.logger.error('Session middleware issue:', error);
-
-        const dto: DataApiResponseDto<SlotMachineResponse> = {
+        throw new InternalServerErrorException({
           data: null,
           success: false,
           message: 'Internal server error.',
-        };
-
-        response.status(HttpStatus.INTERNAL_SERVER_ERROR);
-        return dto;
+        });
       }
+
+      this.logger.error('Unexpected error:', error);
+      throw new InternalServerErrorException({
+        data: null,
+        success: false,
+        message: 'Internal server error.',
+      });
     }
   }
 }

@@ -14,7 +14,7 @@ import { API_VERSION_1 } from '@src/common/constants';
 import { RequestWithSession } from '@src/common/types/request-with-session';
 import { SlotMachineService } from '@src/slot-machine/slot-machine.service';
 import { DataApiResponseDto } from '@src/common/dtos/data-api-response.dto';
-import { SlotMachineResponse } from '@src/slot-machine/types';
+import { SlotMachineResponse } from '@src/slot-machine/dtos/slot-machine.response';
 import { InsufficientCreditsError, SessionDoesNotExistError } from '@src/slot-machine/errors';
 
 @Controller('slot-machine')

@@ -1,0 +1,23 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# This will lint both backend and frontend on each commit,
+# yet, each of the directories must define their own lint script
+
+# Lint backend
+cd backend && npm run lint
+RESULT_BE=$?
+
+cd ..
+
+# Lint frontend
+cd frontend && npm run lint
+RESULT_FE=$?
+
+cd ..
+
+# Fail commit if any of the linters linter fails
+if [ $RESULT_BE -ne 0 ] || [ $RESULT_FE -ne 0 ]; then
+	echo "Lint failed in backend or frontend. Commit aborted."
+	exit 1
+fi

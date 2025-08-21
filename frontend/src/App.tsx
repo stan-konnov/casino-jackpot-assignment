@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-3
+
 import { SlotMachinePage } from '@src/pages/SlotMachinePage';
 import { AppRoutes } from '@src/common/routes';
 

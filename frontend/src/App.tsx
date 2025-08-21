@@ -1,11 +1,16 @@
 import { ReactElement } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
+import { SlotMachinePage } from '@src/pages/SlotMachinePage';
 
 const App = (): ReactElement => {
   return (
-    <div>
-      <h1>Welcome to the Casino Jackpot Assignment</h1>
-      <p>This is a placeholder for application content.</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/slot-machine" replace />} />
+        <Route path="/slot-machine" element={<SlotMachinePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

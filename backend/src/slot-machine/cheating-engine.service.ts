@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CheatingEngineService {
-  static shouldRerollSlotMachine(credits: number, isWin: boolean): boolean {
+  static shouldRerollSlotMachine(isWin: boolean, credits: number): boolean {
     // Reroll only on the winning spins
     if (!isWin) {
       return false;

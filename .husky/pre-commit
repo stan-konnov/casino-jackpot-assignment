@@ -1,8 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# This will lint both backend and frontend on each commit,
-# yet, each of the directories must define their own lint script
+# This will lint both backend and frontend on each commit attempt, yet,
+# each of the directories must define their own lint script (and config)
 
 # Lint backend
 cd backend && npm run lint

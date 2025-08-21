@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ConfigService } from '@nestjs/config';
 
 import { DatabaseService } from '@src/database/database.service';
-import { RequestWithSession } from '@src/common/types/request.with.session';
+import { RequestWithSession } from '@src/common/types/request-with-session';
 
 /**
  * Middleware to handle user sessions based on IP address.

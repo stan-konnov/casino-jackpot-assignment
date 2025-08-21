@@ -37,7 +37,7 @@ export default [
       },
     },
     rules: {
-      'prettier/prettier': 'warn',
+      'prettier/prettier': 'error',
       'react/react-in-jsx-scope': 'off',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/explicit-function-return-type': 'error',

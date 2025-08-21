@@ -1,6 +1,7 @@
 {
   "files.exclude": {
     "**/dist": true,
+    "**/generated": true,
     "**/.coverage": true,
     "**/.coverage.**": true,
     "**/node_modules": true,

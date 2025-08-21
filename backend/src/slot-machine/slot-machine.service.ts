@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { SlotSymbol } from '@src/slot-machine/slot-symbol.enum';
+import { SlotSymbolRewardMap } from '@src/slot-machine/slot-symbol-reward.map';
 import { DatabaseService } from '@src/database/database.service';
 import { InsufficientCreditsError, SessionDoesNotExistError } from '@src/slot-machine/errors';
 
@@ -34,20 +35,7 @@ export class SlotMachineService {
     let reward = 0;
 
     if (win) {
-      switch (slots[0]) {
-        case SlotSymbol.CHERRY:
-          reward = 10;
-          break;
-        case SlotSymbol.LEMON:
-          reward = 20;
-          break;
-        case SlotSymbol.ORANGE:
-          reward = 30;
-          break;
-        case SlotSymbol.WATERMELON:
-          reward = 40;
-          break;
-      }
+      reward = SlotSymbolRewardMap[slots[0]];
 
       await this.databaseService.session.update({
         where: { id: sessionId },

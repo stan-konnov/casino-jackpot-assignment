@@ -8,11 +8,11 @@ import { RequestWithSession } from '@src/common/types/request-with-session';
 export class CreditsController {
   @Get()
   @Version(API_VERSION_1)
-  getCredits(@Req() request: RequestWithSession): DataApiResponseDto<number> {
+  getCredits(@Req() request: RequestWithSession): DataApiResponseDto<number | null> {
     return {
       success: true,
-      data: request.session.credits,
       message: 'Available credits.',
+      data: request.session?.credits || null,
     };
   }
 }

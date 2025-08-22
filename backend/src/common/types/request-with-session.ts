@@ -1,4 +1,4 @@
 import { Request } from 'express';
 import { Session } from '@prisma/client';
 
-export type RequestWithSession = Request & { session: Session };
+export type RequestWithSession = Request & { session: Session | null };

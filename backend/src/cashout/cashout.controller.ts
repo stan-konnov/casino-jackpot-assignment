@@ -24,16 +24,25 @@ export class CashoutController {
   @Version(API_VERSION_1)
   @HttpCode(HttpStatus.OK)
   async cashout(@Req() request: RequestWithSession): Promise<BaseApiResponseDto> {
+    /**
+     * Ensure idempotency by checking if the session exists.
+     * If the session does not exist, it means the cashout has already been processed
+     * or the session was never created, hence we return a success response and avoid duplicate processing.
+     */
+    if (!request.session) {
+      return {
+        success: true,
+        message: 'Cashout already happened or session does not exist.',
+      };
+    }
     try {
       await this.cashoutService.cashout(request.session.credits, request.session.id);
-
       return {
         success: true,
         message: `Successfully cashed out the credits.`,
       };
     } catch (error) {
       this.logger.error('Unexpected error:', error);
-
       throw new InternalServerErrorException({
         data: null,
         success: false,

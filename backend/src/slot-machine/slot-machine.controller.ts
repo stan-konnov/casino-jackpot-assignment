@@ -28,7 +28,11 @@ export class SlotMachineController {
   @HttpCode(HttpStatus.OK)
   async play(@Req() request: RequestWithSession): Promise<DataApiResponseDto<SlotMachineResponse>> {
     try {
-      const slots = await this.slotMachineService.play(request.session.id);
+      /**
+       * NOTE: We are certain that session exists at this point
+       * due to the session middleware creating one for this route
+       */
+      const slots = await this.slotMachineService.play(request.session!.id);
 
       return {
         data: slots,
@@ -46,7 +50,7 @@ export class SlotMachineController {
 
       if (error instanceof SessionDoesNotExistError) {
         /**
-         * This error indicates that the session does not exist.
+         * Nevertheless, we still check if the session does not exist.
          * Naturally, this should never happen, but if it does,
          * we log and return a generic error message
          * to not to expose any sensitivities.

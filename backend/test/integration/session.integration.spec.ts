@@ -16,7 +16,7 @@ beforeAll(async () => {
   app = moduleRef.createNestApplication();
   await app.init();
 
-  prisma = new PrismaClient({ datasources: { db: { url: 'file:./test.db' } } });
+  prisma = new PrismaClient();
   await prisma.$connect();
 });
 

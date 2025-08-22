@@ -11,12 +11,12 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
     "lint": "eslint . --ext .ts --fix",
     "build": "tsc && tsc-alias",
     "start": "node dist/main.js",
     "migrate": "prisma migrate dev",
-    "start:dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/main.ts"
+    "start:dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/main.ts",
+    "test": "dotenv -e .env.test -- npx prisma migrate deploy && dotenv -e .env.test -- npx jest"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.6",
@@ -40,6 +40,7 @@
     "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.39.0",
     "@typescript-eslint/parser": "^8.39.0",
+    "dotenv-cli": "^10.0.0",
     "eslint": "^9.32.0",
     "eslint-plugin-prettier": "^5.5.4",
     "husky": "^9.1.7",

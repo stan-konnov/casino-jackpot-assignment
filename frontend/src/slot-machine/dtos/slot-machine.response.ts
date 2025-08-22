@@ -1,6 +1,4 @@
-import { SlotSymbol } from '@src/slot-machine/slot-symbol.enum';
-
 export type SlotMachineResponse = {
-  slots: [SlotSymbol, SlotSymbol, SlotSymbol, SlotSymbol];
+  slots: [string, string, string, string];
   credits: number;
 };

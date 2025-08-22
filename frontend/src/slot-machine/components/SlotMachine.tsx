@@ -64,7 +64,7 @@ export const SlotMachine = (): ReactElement => {
       <div className="slot-machine-credits">{credits !== null ? credits : '-'}</div>
 
       <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center' }}>
-        <CashoutButton onCashout={handleOnCashout} disabled={!credits} />
+        <CashoutButton onCashout={handleOnCashout} disabled={!credits || spinning} />
       </div>
     </div>
   );

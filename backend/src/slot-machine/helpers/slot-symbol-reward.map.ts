@@ -1,4 +1,4 @@
-import { SlotSymbol } from '@src/slot-machine/slot-symbol.enum';
+import { SlotSymbol } from '@src/slot-machine/helpers/slot-symbol.enum';
 
 export const SlotSymbolRewardMap: Record<SlotSymbol, number> = {
   [SlotSymbol.CHERRY]: 10,

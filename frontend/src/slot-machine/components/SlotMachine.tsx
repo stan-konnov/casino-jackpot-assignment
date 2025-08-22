@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { creditsRequest } from '@src/credits/api';
@@ -15,10 +15,12 @@ export const SlotMachine = (): ReactElement => {
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
 
-  useState(async () => {
-    const { data } = await creditsRequest();
-    setCredits(data);
-  });
+  useEffect(() => {
+    (async (): Promise<void> => {
+      const { data } = await creditsRequest();
+      setCredits(data);
+    })();
+  }, []);
 
   const handleSpin = async (): Promise<void> => {
     setSpinning(true);

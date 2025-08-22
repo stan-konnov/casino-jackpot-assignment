@@ -64,13 +64,8 @@ export class SlotMachineService {
     };
   }
 
-  private spinTheSlots(): [SlotSymbol, SlotSymbol, SlotSymbol, SlotSymbol] {
-    return [
-      this.getRandomSymbol(),
-      this.getRandomSymbol(),
-      this.getRandomSymbol(),
-      this.getRandomSymbol(),
-    ];
+  private spinTheSlots(): [SlotSymbol, SlotSymbol, SlotSymbol] {
+    return [this.getRandomSymbol(), this.getRandomSymbol(), this.getRandomSymbol()];
   }
 
   private getRandomSymbol = (): SlotSymbol =>

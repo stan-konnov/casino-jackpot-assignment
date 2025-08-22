@@ -1,4 +1,4 @@
-import { CreditsController } from './credits.controller';
+import { CreditsController } from '@src/credits/credits.controller';
 import { RequestWithSession } from '@src/common/types/request-with-session';
 
 describe('CreditsController', () => {

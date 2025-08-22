@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react';
 import toast from 'react-hot-toast';
-
 import { playSlotMachineRequest } from '@src/slot-machine/api';
+import '../styles/index.css';
 
 export const SlotMachine = (): ReactElement => {
   const INITIAL_BLOCKS = ['X', 'X', 'X'];
@@ -34,31 +34,23 @@ export const SlotMachine = (): ReactElement => {
   };
 
   return (
-    <div className="flex flex-row items-center gap-8">
-      <div className="flex flex-col items-center gap-4">
-        <table className="border border-gray-300">
-          <tbody>
-            <tr>
-              {blocks.map((block, idx) => (
-                <td key={idx} className="w-16 h-16 text-3xl text-center border border-gray-300">
-                  {block}
-                </td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-          onClick={handleSpin}
-          disabled={spinning}
-        >
-          {spinning ? 'Spinning...' : 'Spin'}
-        </button>
-      </div>
-      <div className="flex flex-col items-center">
-        <span className="text-lg font-semibold">Credits</span>
-        <span className="text-2xl">{credits !== null ? credits : '-'}</span>
-      </div>
+    <div className="slot-machine-container">
+      <table className="slot-machine-table">
+        <tbody>
+          <tr>
+            {blocks.map((block, idx) => (
+              <td key={idx} className="slot-machine-block">
+                {block}
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+      <button className="slot-machine-spin-btn" onClick={handleSpin} disabled={spinning}>
+        {spinning ? 'Spinning...' : 'Spin'}
+      </button>
+      <div className="slot-machine-credits-label">Remaining Credits</div>
+      <div className="slot-machine-credits">{credits !== null ? credits : '-'}</div>
     </div>
   );
 };

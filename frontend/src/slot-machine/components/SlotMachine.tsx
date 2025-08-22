@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { CashoutButton } from '@src/cashout/CashoutButton';
 import { playSlotMachineRequest } from '@src/slot-machine/api';
 
+import 'src/styles/toast.css';
 import '@src/slot-machine/styles/index.css';
 
 export const SlotMachine = (): ReactElement => {
@@ -33,7 +34,7 @@ export const SlotMachine = (): ReactElement => {
     } catch (error) {
       setSpinning(false);
       toast.error(error instanceof Error ? error.message : 'Unknown error', {
-        className: 'custom-toast',
+        className: 'custom-toast-base custom-toast-error',
         icon: null,
       });
     }

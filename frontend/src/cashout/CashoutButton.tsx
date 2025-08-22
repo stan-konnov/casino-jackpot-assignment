@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { cashoutRequest } from '@src/cashout/api';
 
+import 'src/styles/toast.css';
 import '@src/cashout/styles/index.css';
 
 type CashoutButtonProps = {
@@ -19,9 +20,15 @@ export const CashoutButton = ({ onCashout, disabled }: CashoutButtonProps): Reac
     try {
       const response = await cashoutRequest();
       if (response.success) {
-        toast.success(response.message || 'Cashout successful!');
+        toast.success(response.message || 'Cashout successful!', {
+          className: 'custom-toast-base custom-toast-success',
+          icon: null,
+        });
       } else {
-        toast.error(response.message || 'Cashout failed.');
+        toast.error(response.message || 'Cashout failed.', {
+          className: 'custom-toast-base custom-toast-error',
+          icon: null,
+        });
       }
     } catch {
       toast.error('Cashout failed. Please try again.');

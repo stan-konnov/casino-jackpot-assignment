@@ -1,4 +1,5 @@
 import { ReactElement, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { playSlotMachineRequest } from '@src/slot-machine/api';
 
@@ -12,16 +13,22 @@ export const SlotMachine = (): ReactElement => {
     setSpinning(true);
     setBlocks(INITIAL_BLOCKS);
 
-    const { data } = await playSlotMachineRequest();
+    try {
+      const { data } = await playSlotMachineRequest();
 
-    setTimeout(() => setBlocks([data?.slots[0]!, 'X', 'X']), 1000);
+      setTimeout(() => setBlocks([data?.slots[0]!, 'X', 'X']), 1000);
 
-    setTimeout(() => setBlocks([data?.slots[0]!, data?.slots[1]!, 'X']), 2000);
+      setTimeout(() => setBlocks([data?.slots[0]!, data?.slots[1]!, 'X']), 2000);
 
-    setTimeout(() => {
-      setBlocks([data?.slots[0]!, data?.slots[1]!, data?.slots[2]!]);
+      setTimeout(() => {
+        setBlocks([data?.slots[0]!, data?.slots[1]!, data?.slots[2]!]);
+        setSpinning(false);
+      }, 3000);
+    } catch (error) {
       setSpinning(false);
-    }, 3000);
+
+      toast.error(error instanceof Error ? error.message : 'Unknown error');
+    }
   };
 
   return (

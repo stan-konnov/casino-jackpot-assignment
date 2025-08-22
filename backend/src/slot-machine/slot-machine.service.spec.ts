@@ -40,4 +40,41 @@ describe('SlotMachineService', () => {
     expect(result).toHaveProperty('credits');
     expect(typeof result.credits).toBe('number');
   });
+
+  it('should decrement credits by 1 on play', async () => {
+    const session = { id: 'session-id', credits: 10 };
+
+    (databaseService.session!.findFirst as jest.Mock).mockResolvedValue(session);
+    (databaseService.session!.update as jest.Mock).mockResolvedValue({});
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    jest.spyOn(service as any, 'spinTheSlots').mockReturnValue(['C', 'L', 'O']);
+    await service.play('session-id');
+
+    expect(databaseService.session!.update).toHaveBeenCalledWith({
+      where: { id: 'session-id' },
+      data: { credits: { decrement: 1 } },
+    });
+  });
+
+  it('should increment credits by reward on win', async () => {
+    const session = { id: 'session-id', credits: 10 };
+
+    (databaseService.session!.findFirst as jest.Mock).mockResolvedValue(session);
+    (databaseService.session!.update as jest.Mock).mockResolvedValue({});
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    jest.spyOn(service as any, 'spinTheSlots').mockReturnValue(['C', 'C', 'C']);
+    await service.play('session-id');
+
+    expect(databaseService.session!.update).toHaveBeenCalledWith({
+      where: { id: 'session-id' },
+      data: { credits: { decrement: 1 } },
+    });
+
+    expect(databaseService.session!.update).toHaveBeenCalledWith({
+      where: { id: 'session-id' },
+      data: { credits: { increment: 10 } },
+    });
+  });
 });

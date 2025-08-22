@@ -1,7 +1,9 @@
 import { ReactElement, useState } from 'react';
 import toast from 'react-hot-toast';
+
 import { playSlotMachineRequest } from '@src/slot-machine/api';
-import '../styles/index.css';
+
+import '@src/slot-machine/styles/index.css';
 
 export const SlotMachine = (): ReactElement => {
   const INITIAL_BLOCKS = ['X', 'X', 'X'];

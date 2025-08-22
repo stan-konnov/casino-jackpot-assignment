@@ -31,7 +31,10 @@ export const SlotMachine = (): ReactElement => {
       }, 3000);
     } catch (error) {
       setSpinning(false);
-      toast.error(error instanceof Error ? error.message : 'Unknown error');
+      toast.error(error instanceof Error ? error.message : 'Unknown error', {
+        className: 'custom-toast',
+        icon: null,
+      });
     }
   };
 

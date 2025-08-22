@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
 
 import { SlotMachinePage } from '@src/pages/SlotMachinePage';
 import { AppRoutes } from '@src/common/routes';
@@ -14,8 +13,6 @@ const App = (): ReactElement => {
           <Route path={AppRoutes.SLOT_MACHINE} element={<SlotMachinePage />} />
         </Routes>
       </BrowserRouter>
-
-      <Toaster position="bottom-center" />
     </>
   );
 };

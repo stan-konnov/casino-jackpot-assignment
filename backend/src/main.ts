@@ -21,6 +21,11 @@ const bootstrap = async (): Promise<void> => {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || 3000;
 
+  app.enableCors({
+    origin: configService.get<number>('FRONTEND_URL'),
+    credentials: true,
+  });
+
   await app.listen(port);
 
   Logger.log(`Server is running on http://localhost:${port}`);

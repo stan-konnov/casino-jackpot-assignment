@@ -36,4 +36,6 @@
             "source.fixAll.eslint": "explicit"
         },
     },
+
+    "css.lint.unknownAtRules": "ignore",
 }

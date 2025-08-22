@@ -1,6 +1,7 @@
 import { SlotMachineController } from '@src/slot-machine/slot-machine.controller';
 import { SlotMachineService } from '@src/slot-machine/slot-machine.service';
 import { RequestWithSession } from '@src/common/types/request-with-session';
+import { InsufficientCreditsError } from '@src/slot-machine/errors';
 
 describe('SlotMachineController', () => {
   let controller: SlotMachineController;
@@ -20,13 +21,25 @@ describe('SlotMachineController', () => {
 
     expect(slotMachineService.play).toHaveBeenCalledWith('session-id');
     expect(result.success).toBe(true);
-    expect(result.data).toHaveProperty('slots');
-    expect(result.data).toHaveProperty('credits');
+    expect(result.data).toEqual({ slots: ['A', 'A', 'A'], credits: 10 });
   });
 
-  // Should never happen, but never hurts to double check
-  it('should return error if session is missing', async () => {
-    const req = { session: undefined } as unknown as RequestWithSession;
-    await expect(controller.play(req)).rejects.toThrow();
+  it('should return BadRequestException for insufficient credits', async () => {
+    const sessionId = 'session-id';
+
+    slotMachineService.play = jest.fn().mockImplementation(() => {
+      throw new InsufficientCreditsError(`Session with ID ${sessionId} has insufficient credits.`);
+    });
+
+    const req = { session: { id: sessionId } } as RequestWithSession;
+
+    await expect(controller.play(req)).rejects.toMatchObject({
+      response: {
+        data: null,
+        success: false,
+        message: `Session with ID ${sessionId} has insufficient credits.`,
+      },
+      status: 400,
+    });
   });
 });

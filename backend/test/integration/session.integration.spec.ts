@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, VersioningType } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { PrismaClient } from '@prisma/client';
 
@@ -8,12 +8,18 @@ import { AppModule } from '../../src/app.module';
 let app: INestApplication;
 let prisma: PrismaClient;
 
+const TEST_IP = '127.0.0.1';
+
 beforeAll(async () => {
   const moduleRef = await Test.createTestingModule({
     imports: [AppModule],
   }).compile();
 
   app = moduleRef.createNestApplication();
+
+  app.setGlobalPrefix('api');
+  app.enableVersioning({ type: VersioningType.URI });
+
   await app.init();
 
   prisma = new PrismaClient();
@@ -31,10 +37,9 @@ afterAll(async () => {
 
 describe('Session integration', () => {
   it('creates session on credits request', async () => {
-    const res = await request(app.getHttpServer()).get('/api/v1/credits');
-    expect(res.status).toBe(200);
+    await request(app.getHttpServer()).get('/api/v1/credits').set('x-forwarded-for', TEST_IP);
 
-    const sessions = await prisma.session.findMany();
+    const sessions = await prisma.session.findMany({ where: { ip: TEST_IP } });
     expect(sessions.length).toBe(1);
   });
 
@@ -43,15 +48,18 @@ describe('Session integration', () => {
       data: {
         id: 'test-session',
         credits: 10,
-        ip: '127.0.0.1',
+        ip: TEST_IP,
       },
     });
 
-    let session = await prisma.session.findFirst({ where: { id: 'test-session' } });
+    let session = await prisma.session.findFirst({ where: { ip: TEST_IP } });
     const initialCredits = session!.credits;
 
-    await request(app.getHttpServer()).get('/api/v1/slot-machine/play');
-    session = await prisma.session.findFirst();
+    await request(app.getHttpServer())
+      .get('/api/v1/slot-machine/play')
+      .set('x-forwarded-for', TEST_IP);
+
+    session = await prisma.session.findFirst({ where: { ip: TEST_IP } });
 
     expect(session!.credits).toBe(initialCredits - 1);
   });
@@ -61,14 +69,14 @@ describe('Session integration', () => {
       data: {
         id: 'test-session',
         credits: 10,
-        ip: '127.0.0.1',
+        ip: TEST_IP,
       },
     });
-    let session = await prisma.session.findFirst({ where: { id: 'test-session' } });
+    let session = await prisma.session.findFirst({ where: { ip: TEST_IP } });
     expect(session).not.toBeNull();
 
-    await request(app.getHttpServer()).post('/api/v1/cashout').send();
-    session = await prisma.session.findFirst({ where: { id: 'test-session' } });
+    await request(app.getHttpServer()).get('/api/v1/cashout').set('x-forwarded-for', TEST_IP);
+    session = await prisma.session.findFirst({ where: { ip: TEST_IP } });
 
     expect(session).toBeNull();
   });

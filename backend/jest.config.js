@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  roots: ['<rootDir>/src'],
+  roots: ['<rootDir>/src', '<rootDir>/test/integration'],
   moduleFileExtensions: ['ts', 'js', 'json'],
   transform: {
     '^.+\\.ts$': ['ts-jest', { tsconfig: 'tsconfig.json' }],

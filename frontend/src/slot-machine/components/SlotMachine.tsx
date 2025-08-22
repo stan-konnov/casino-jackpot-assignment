@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { creditsRequest } from '@src/credits/api';
 import { CashoutButton } from '@src/cashout/CashoutButton';
 import { playSlotMachineRequest } from '@src/slot-machine/api';
 
@@ -13,6 +14,11 @@ export const SlotMachine = (): ReactElement => {
   const [blocks, setBlocks] = useState(INITIAL_BLOCKS);
   const [spinning, setSpinning] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
+
+  useState(async () => {
+    const { data } = await creditsRequest();
+    setCredits(data);
+  });
 
   const handleSpin = async (): Promise<void> => {
     setSpinning(true);

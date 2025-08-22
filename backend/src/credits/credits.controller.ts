@@ -12,7 +12,7 @@ export class CreditsController {
     return {
       success: true,
       message: 'Available credits.',
-      data: request.session?.credits || null,
+      data: request.session?.credits ?? null,
     };
   }
 }

@@ -39,6 +39,10 @@ export const SlotMachine = (): ReactElement => {
     }
   };
 
+  const handleOnCashout = async (): Promise<void> => {
+    setCredits(0);
+  };
+
   return (
     <div className="slot-machine-container">
       <table className="slot-machine-table">
@@ -59,7 +63,7 @@ export const SlotMachine = (): ReactElement => {
       <div className="slot-machine-credits">{credits !== null ? credits : '-'}</div>
 
       <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center' }}>
-        <CashoutButton />
+        <CashoutButton onCashout={handleOnCashout} disabled={!credits} />
       </div>
     </div>
   );

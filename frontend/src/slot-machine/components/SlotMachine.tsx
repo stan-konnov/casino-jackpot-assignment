@@ -1,6 +1,7 @@
 import { ReactElement, useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { CashoutButton } from '@src/cashout/CashoutButton';
 import { playSlotMachineRequest } from '@src/slot-machine/api';
 
 import '@src/slot-machine/styles/index.css';
@@ -56,6 +57,10 @@ export const SlotMachine = (): ReactElement => {
       </button>
       <div className="slot-machine-credits-label">Remaining Credits</div>
       <div className="slot-machine-credits">{credits !== null ? credits : '-'}</div>
+
+      <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center' }}>
+        <CashoutButton />
+      </div>
     </div>
   );
 };

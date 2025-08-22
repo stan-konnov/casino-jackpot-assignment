@@ -8,6 +8,7 @@ export const SlotMachine = (): ReactElement => {
 
   const [blocks, setBlocks] = useState(INITIAL_BLOCKS);
   const [spinning, setSpinning] = useState(false);
+  const [credits, setCredits] = useState<number | null>(null);
 
   const handleSpin = async (): Promise<void> => {
     setSpinning(true);
@@ -15,6 +16,8 @@ export const SlotMachine = (): ReactElement => {
 
     try {
       const { data } = await playSlotMachineRequest();
+
+      setCredits(data?.credits!);
 
       setTimeout(() => setBlocks([data?.slots[0]!, 'X', 'X']), 1000);
 
@@ -26,31 +29,36 @@ export const SlotMachine = (): ReactElement => {
       }, 3000);
     } catch (error) {
       setSpinning(false);
-
       toast.error(error instanceof Error ? error.message : 'Unknown error');
     }
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <table className="border border-gray-300">
-        <tbody>
-          <tr>
-            {blocks.map((block, idx) => (
-              <td key={idx} className="w-16 h-16 text-3xl text-center border border-gray-300">
-                {block}
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-      <button
-        className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-        onClick={handleSpin}
-        disabled={spinning}
-      >
-        {spinning ? 'Spinning...' : 'Spin'}
-      </button>
+    <div className="flex flex-row items-center gap-8">
+      <div className="flex flex-col items-center gap-4">
+        <table className="border border-gray-300">
+          <tbody>
+            <tr>
+              {blocks.map((block, idx) => (
+                <td key={idx} className="w-16 h-16 text-3xl text-center border border-gray-300">
+                  {block}
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+          onClick={handleSpin}
+          disabled={spinning}
+        >
+          {spinning ? 'Spinning...' : 'Spin'}
+        </button>
+      </div>
+      <div className="flex flex-col items-center">
+        <span className="text-lg font-semibold">Credits</span>
+        <span className="text-2xl">{credits !== null ? credits : '-'}</span>
+      </div>
     </div>
   );
 };

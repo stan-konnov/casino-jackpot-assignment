@@ -11,6 +11,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
+    "test": "jest",
     "lint": "eslint . --ext .ts --fix",
     "build": "tsc && tsc-alias",
     "start": "node dist/main.js",

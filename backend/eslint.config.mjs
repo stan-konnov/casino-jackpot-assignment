@@ -14,8 +14,16 @@ export default [
         sourceType: 'module',
       },
       globals: {
-        setTimeout: 'readonly',
-      },
+      it: 'readonly',
+      jest: 'readonly',
+      expect: 'readonly',
+      afterAll: 'readonly',
+      describe: 'readonly',
+      afterEach: 'readonly',
+      beforeAll: 'readonly',
+      setTimeout: 'readonly',
+      beforeEach: 'readonly',
+    },
     },
     plugins: {
       '@typescript-eslint': ts,

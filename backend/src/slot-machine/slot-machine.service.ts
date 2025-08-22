@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 
-import { SlotSymbol } from '@src/slot-machine/slot-symbol.enum';
 import { DatabaseService } from '@src/database/database.service';
-import { SlotSymbolRewardMap } from '@src/slot-machine/slot-symbol-reward.map';
-import { CheatingEngineService } from '@src/slot-machine/cheating-engine.service';
+import { SlotSymbol } from '@src/slot-machine/helpers/slot-symbol.enum';
 import { SlotMachineResponse } from '@src/slot-machine/dtos/slot-machine.response';
+import { CheatingEngineService } from '@src/common/services/cheating-engine.service';
+import { SlotSymbolRewardMap } from '@src/slot-machine/helpers/slot-symbol-reward.map';
 import { InsufficientCreditsError, SessionDoesNotExistError } from '@src/slot-machine/errors';
 
 @Injectable()

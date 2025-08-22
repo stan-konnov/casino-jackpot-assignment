@@ -13,6 +13,9 @@ export default [
         ecmaVersion: 'latest',
         sourceType: 'module',
       },
+      globals: {
+        setTimeout: 'readonly',
+      },
     },
     plugins: {
       '@typescript-eslint': ts,

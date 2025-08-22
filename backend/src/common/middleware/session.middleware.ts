@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { DatabaseService } from '@src/database/database.service';
 import { RequestWithSession } from '@src/common/types/request-with-session';
+import { SESSION_CREATION_EXCLUDED_PATHS } from '@src/common/constants';
 
 /**
  * Middleware to handle user sessions based on IP address.
@@ -25,7 +26,8 @@ export class SessionMiddleware implements NestMiddleware {
       where: { ip },
     });
 
-    if (!session) {
+    // If session does not exist and the request URL is not excluded, create a new session
+    if (!session && !SESSION_CREATION_EXCLUDED_PATHS.includes(request.baseUrl)) {
       session = await this.databaseService.session.create({
         data: {
           ip,

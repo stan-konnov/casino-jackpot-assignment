@@ -26,6 +26,22 @@ services:
     volumes:
       - postgres_test_data_container:/var/lib/postgresql/data
 
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile.dev
+    container_name: casino-jackpot-backend
+    image: casino-jackpot-backend:latest
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    env_file:
+      - ./backend/.env.default
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/backend
+
 volumes:
   postgres_data_container:
   postgres_test_data_container:

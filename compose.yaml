@@ -40,7 +40,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/backend
+      - ./backend:/backend
 
 volumes:
   postgres_data_container:

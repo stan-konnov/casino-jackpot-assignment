@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=/root/.npm npm ci
 COPY . .
 
 # Generate Prisma client
-RUN npx prisma generate
+RUN npx prisma generate --schema=backend/prisma/schema.prisma
 
 # Make sure the non-root
 # user can write if needed

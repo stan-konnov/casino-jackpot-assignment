@@ -1,0 +1,22 @@
+ARG NODE_VERSION=24
+
+
+FROM node:${NODE_VERSION}-bookworm-slim
+
+WORKDIR /frontend
+
+COPY package*.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci
+COPY . .
+
+RUN chown -R node:node /frontend
+USER node
+
+ENV NODE_ENV=development \
+    PORT=5173 \
+    CHOKIDAR_USEPOLLING=1 \
+    WATCHPACK_POLLING=true
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]

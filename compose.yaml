@@ -42,6 +42,22 @@ services:
     volumes:
       - ./backend:/backend
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: casino-frontend
+    image: casino-frontend:latest
+    restart: unless-stopped
+    depends_on:
+      - backend
+    env_file:
+      - ./frontend/.env.default
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/frontend
+
 volumes:
   postgres_data_container:
   postgres_test_data_container:

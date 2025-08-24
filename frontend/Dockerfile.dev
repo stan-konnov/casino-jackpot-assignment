@@ -6,7 +6,7 @@ FROM node:${NODE_VERSION}-bookworm-slim
 WORKDIR /frontend
 
 COPY package*.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci
+RUN npm install
 COPY . .
 
 RUN chown -R node:node /frontend

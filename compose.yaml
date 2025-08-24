@@ -41,6 +41,7 @@ services:
       - "3000:3000"
     volumes:
       - ./backend:/backend
+      - /backend/node_modules
 
   frontend:
     build:
@@ -57,6 +58,7 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/frontend
+      - /frontend/node_modules
 
 volumes:
   postgres_data_container:
